@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>heading 01</h1>
+
+    <form >
+        <label for="username">username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br>
+    </form>
+    <br><br>
+    <button id="button1">Get all users</button>
+    <button id="button2">create new user</button>
+    <br><hr>
+    <div id="demo"></div>
+
+    <script>
+        button1.onclick = function(){
+            var demo = document.getElementById("demo");
+           fetch("http://localhost:9000/getallusers")
+            .then(response => response.json())
+            .then(data => {
+                 console.log(data);
+                 demo.innerHTML = data.map( (user)=> `<p> usename: ${user.username} and password: ${user.password} </p> `)
+             })
+        }
+
+        button2.onclick = function(){
+            var user = {username:username.value,email:email.value,password:password.value}
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            }
+            fetch("http://localhost:9000/adduser", options)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error))
+        }
+    </script>
+  </body>
+</html>
